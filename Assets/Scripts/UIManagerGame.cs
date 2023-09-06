@@ -28,6 +28,7 @@ public class UIManagerGame : MonoBehaviour
         balanceCount;
 
     private YandexAds ads;
+    private int adsCount;
 
     private Sequence showScoresBoardAnim,
         showScoresAnim;
@@ -79,8 +80,17 @@ public class UIManagerGame : MonoBehaviour
         {
             Debug.Log("BOARDCallBAck");
 #if UNITY_WEBGL && !UNITY_EDITOR
-            Debug.Log("BOARDCallBAckADS");
-            ads.ShowFSADS(this);
+            adsCount++;
+            if (adsCount == 3)
+            {
+                adsCount = 0;
+                Debug.Log("BOARDCallBAckADS");
+                ads.ShowFSADS(this);
+            }
+            else
+            {
+                ShowScores();
+            }
 #else
             Debug.Log("BOARDCallBAckSHowScores");
             ShowScores();
