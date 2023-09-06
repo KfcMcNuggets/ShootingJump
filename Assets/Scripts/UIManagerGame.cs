@@ -27,13 +27,17 @@ public class UIManagerGame : MonoBehaviour
         totalScoresCount,
         balanceCount;
 
-    private Sequence showScoresAnim;
+    private YandexAds ads;
+
+    private Sequence showScoresBoardAnim,
+        showScoresAnim;
 
     public void EndGame(GameEndData endData)
     {
+        ads = FindAnyObjectByType<YandexAds>();
         HideGameUI();
         PrepareAnim(endData);
-        showScoresAnim.Play();
+        showScoresBoardAnim.Play();
     }
 
     private void HideGameUI()
@@ -62,8 +66,8 @@ public class UIManagerGame : MonoBehaviour
         totalScoresText.text = Localization.CurrentLanguage["TotalScoresText"];
 
         balanceCount.text = endData.Balance;
-        showScoresAnim = DOTween.Sequence();
-        showScoresAnim.Append(
+        showScoresBoardAnim = DOTween.Sequence();
+        showScoresBoardAnim.Append(
             DOTween.To(
                 () => scoresUI.anchoredPosition,
                 x => scoresUI.anchoredPosition = x,
@@ -71,6 +75,20 @@ public class UIManagerGame : MonoBehaviour
                 1.5f
             )
         );
+        showScoresBoardAnim.AppendCallback(() =>
+        {
+            Debug.Log("BOARDCallBAck");
+#if UNITY_WEBGL && !UNITY_EDITOR
+            Debug.Log("BOARDCallBAckADS");
+            ads.ShowFSADS(this);
+#else
+            Debug.Log("BOARDCallBAckSHowScores");
+            ShowScores();
+#endif
+            Debug.Log("BOARDCallBAckend");
+        });
+
+        showScoresAnim = DOTween.Sequence();
 
         showScoresAnim.AppendCallback(() =>
         {
@@ -156,5 +174,11 @@ public class UIManagerGame : MonoBehaviour
                 0.1f
             )
         );
+    }
+
+    public void ShowScores()
+    {
+        Debug.Log("SHOWSCORES");
+        showScoresAnim.Restart();
     }
 }

@@ -8,7 +8,6 @@ mergeInto(LibraryManager.library, {
           },
           onClose: function(wasShown) {
             console.log("Реклама Fullscreen закрылась.");
-            myGameInstance.SendMessage("YandexAds", "ContinueGame");
           },
           onError: function(error) {
             console.log("Ошибка по рекламе Fullscreen.");
@@ -25,7 +24,7 @@ mergeInto(LibraryManager.library, {
           },
           onRewarded: () => {
             console.log('Реклама Rewarded просмотрена, и производим награду игроку за просмотр.');
-            
+            myGameInstance.SendMessage("StartAds", "AdsCoints");
           },
           onClose: () => {
             console.log('Реклама Rewarded закрылась.');

@@ -38,9 +38,9 @@ public class GameManager : DamageListeners
 
     public void EndGame(bool win)
     {
-        Debug.Log("EndGame");
         if (gameGoin)
         {
+            Debug.Log("EndGame");
             GameEndData endData = win
                 ? new GameEndData(scores, enemiesKilled, totalEnemies, Time.time - startTime)
                 : new GameEndData(enemiesKilled, totalEnemies);
